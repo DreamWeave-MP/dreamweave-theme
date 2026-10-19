@@ -1,0 +1,52 @@
+--!strict
+-- The theme's contract: the files a DreamWeave site needs are in the payload and readable, from
+-- the source and from the package packed, and nothing in it is a stray.
+local theme = require '@dreamweave/theme'
+local test = require '@jess/test'
+local expect = test.expect
+local suite = test.new()
+
+local function has(path: string): boolean return table.find(theme.files, path) ~= nil end
+
+suite.describe('@dreamweave/theme', function()
+  suite.it('carries the shell every DreamWeave site extends', function()
+    for _, path in {
+      'templates/base.html',
+      'templates/index.html',
+      'templates/page.html',
+      'templates/section.html',
+      'templates/404.html',
+      'templates/macros/dw.html',
+      'templates/macros/project.html',
+      'templates/docs/base.html',
+      'templates/shortcodes/callout.html',
+      'templates/shortcodes/schematic.html',
+      'templates/mod/landing.html',
+      'sass/site.sass',
+      'sass/docs.sass',
+      'sass/_tokens.sass',
+      'static/docs/docs.js',
+      'static/img/glider.svg',
+    } do
+      expect(has(path)).toBe(true)
+    end
+  end)
+
+  suite.it('reads a file as bytes and answers nil for one it lacks', function()
+    local base = theme.read 'templates/base.html'
+    assert(base)
+    expect(string.find(buffer.tostring(base), '<!DOCTYPE html>', 1, true) ~= nil).toBe(true)
+    expect(theme.read 'templates/nothing.html').toBe(nil)
+  end)
+
+  suite.it('is only presentation: no protocol schemas, no content, no build output', function()
+    for _, path in theme.files do
+      expect(string.find(path, '^static/schemas/') == nil).toBe(true)
+      expect(string.find(path, '^content/') == nil).toBe(true)
+      expect(string.find(path, '^public/') == nil).toBe(true)
+      expect(string.find(path, 'processed_images', 1, true) == nil).toBe(true)
+    end
+  end)
+end)
+
+return suite

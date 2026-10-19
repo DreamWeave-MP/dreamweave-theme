@@ -1,0 +1,20 @@
+manifest_version = 1
+
+# The DreamWeave theme: every template, stylesheet, font, image and script a DreamWeave site is
+# presented with, as one package. Sites depend on it instead of copying its files around; the
+# generator reads them through @dreamweave/theme, and a site's own templates/, sass/ and static/
+# override a file of the same path.
+
+[package]
+id = "org.dreamweave.theme"
+version = "0.1.0"
+jess_api = "1"
+include = ["src", "templates", "sass", "static", "licenses", "tests"]
+tests = ["tests/run.jsl"]
+
+[modules]
+"@dreamweave/theme" = "src/init.jsl"
+
+[[layer]]
+id = "dreamweave.theme"
+exports = ["@dreamweave/theme"]

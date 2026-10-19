@@ -1,0 +1,22 @@
+--!strict
+-- @dreamweave/theme: the DreamWeave presentation layer as files, handed to a site generator. The
+-- payload is this package's own; `files` is every path in it and `read` one file's bytes. A site
+-- generator lays its own site's files over these: the same path in the site wins.
+local payload = jess.payload()
+
+export type Theme = {
+  --- The package id, for a generator's messages.
+  read id: string,
+  --- Every payload path in canonical order: `templates/…`, `sass/…`, `static/…`, and this module.
+  read files: { string },
+  --- One payload file's bytes, or nil for a path the theme lacks.
+  read read: (path: string) -> buffer?,
+}
+
+local theme: Theme = table.freeze {
+  id = 'org.dreamweave.theme',
+  files = payload.files,
+  read = payload.read,
+}
+
+return theme
