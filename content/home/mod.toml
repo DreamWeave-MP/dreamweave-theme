@@ -1,0 +1,20 @@
+# DreamWeave Theme as a DreamWeave project: a Jess package. The repository root is its Package Source;
+# jess.toml names the package and its version, and each release tag `theme-<version>` is one
+# version of the package, packed by CI with `jess pack`.
+id = "817cd62f-bacb-4786-815c-fb47ab2fe80a"
+slug = "theme"
+type = "assets"
+status = "active"
+license = "MIT OR Apache-2.0"
+
+[[maintainers]]
+name = "DreamWeave"
+url = "https://github.com/DreamWeave-MP"
+
+[package]
+format = "jpk"
+
+[[releases]]
+version = "0.2.0"
+date = 2026-10-19
+summary = "First release published as a DreamWeave project."
