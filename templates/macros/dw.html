@@ -7,7 +7,7 @@
 {%- endmacro type_label %}
 
 {% macro format_label(format) -%}
-{%- if format == "fomod" %}FOMOD + BAIN{% elif format == "bain" %}BAIN{% elif format == "binary" %}Program{% elif format == "crate" %}Rust crate{% else %}Single directory{% endif -%}
+{%- if format == "fomod" %}FOMOD + BAIN{% elif format == "bain" %}BAIN{% elif format == "binary" %}Program{% elif format == "crate" %}Rust crate{% elif format == "jpk" %}Jess package{% else %}Single directory{% endif -%}
 {%- endmacro format_label %}
 
 {#- What a person calls a platform, not what a compiler does. -#}
@@ -96,7 +96,7 @@
     </div>
     <div class="dw-artifact__actions">
         <a class="dw-button{% if primary %} dw-button--primary{% endif %} dw-button--small" href="{{ publisher.url | safe }}"{% if artifact.platform is defined %} data-platform="{{ dw_macros::platform_key(platform=artifact.platform) }}"{% endif %}>Download {{ release.version }}</a>
-        {%- if artifact.format != "binary" and artifact.format != "crate" %}
+        {%- if artifact.format != "binary" and artifact.format != "crate" and artifact.format != "jpk" %}
         <a class="dw-button dw-button--small" href="modl://{{ project.game }}/?url={{ publisher.url | safe }}" title="Hand this archive to umo or ModdingLinked MO2">Mod manager</a>
         {%- endif %}
     </div>
@@ -109,6 +109,10 @@
                 <dt>SHA-256</dt><dd class="dw-digest">{{ artifact.digests.sha256 }} <button class="dw-copy" type="button" data-copy="{{ artifact.digests.sha256 }}">Copy</button></dd>
                 {%- if release.source.revision is defined %}
                 <dt>Commit</dt><dd class="dw-digest"><a href="{{ release.source.repository | safe }}/commit/{{ release.source.revision }}">{{ release.source.revision | truncate(length=12, end="") }}</a></dd>
+                {%- endif %}
+                {%- if artifact.jess is defined %}
+                <dt>Package</dt><dd><code>{{ artifact.jess.package }}</code></dd>
+                <dt>Content digest</dt><dd class="dw-digest">{{ artifact.jess.content_digest }} <button class="dw-copy" type="button" data-copy="{{ artifact.jess.content_digest }}">Copy</button></dd>
                 {%- endif %}
                 <dt>Sources</dt><dd>{{ artifact.sources | length }}{% if artifact.sources | length > 1 %} (publisher + mirrors){% endif %}</dd>
                 {%- for signature in artifact.signatures %}

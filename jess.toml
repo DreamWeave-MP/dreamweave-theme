@@ -7,7 +7,7 @@ manifest_version = 1
 
 [package]
 id = "org.dreamweave.theme"
-version = "0.1.0"
+version = "0.2.0"
 jess_api = "1"
 include = ["src", "templates", "sass", "static", "licenses", "tests"]
 tests = ["tests/run.jsl"]

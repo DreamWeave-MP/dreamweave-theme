@@ -32,6 +32,12 @@
 {%- if is_rust %}{% set tag_prefix = "" %}{% else %}{% set tag_prefix = slug ~ "-" %}{% endif -%}
 {%- set crate_name = m.package.crate | default(value="") -%}
 {%- set crate_url = "https://crates.io/crates/" ~ crate_name -%}
+{#- A Jess package: the repository root is its Package Source, and jess.toml names it. -#}
+{%- set jess_package = "" -%}
+{%- if format == "jpk" -%}
+{%- set jess_manifest = load_data(path="jess.toml", required=false) -%}
+{%- if jess_manifest %}{% set jess_package = jess_manifest.package.id | default(value="") %}{% endif -%}
+{%- endif -%}
 
 {#- The published releases: mod.lock, which CI writes when a release tag is pushed. Offline
     documentation never reads it, so an archive's bytes depend only on what its tag holds. -#}
@@ -72,7 +78,8 @@
  "format": {{ format | json_encode | safe }},
  "tag_prefix": {{ tag_prefix | json_encode | safe }},
  "crate": {{ crate_name | json_encode | safe }},
- {%- if format == "crate" %}
+ "jess": {{ jess_package | json_encode | safe }},
+ {%- if format == "crate" or format == "jpk" %}
  "documentation_packaged": false,
  {%- elif format == "binary" %}
  "documentation_packaged": false,
@@ -303,6 +310,7 @@
  {%- set bundle = download ~ ".sigstore.json" -%}
  {"id": {{ artifact.id | json_encode | safe }}, "format": {{ artifact.format | json_encode | safe }}, "filename": {{ artifact.filename | json_encode | safe }}, "size": {{ artifact.size | json_encode | safe }}, "digests": {{ artifact.digests | json_encode | safe }},
   {%- if artifact.platform is defined %} "platform": {{ artifact.platform | json_encode | safe }},{% endif %}
+  {%- if artifact.jess is defined %} "jess": {{ artifact.jess | json_encode | safe }},{% endif %}
   "sources": [{"url": {{ download | json_encode | safe }}, "kind": "publisher"}
   {%- for mirror in mirrors -%}
   {%- set mirror_url = mirror.url | replace(from="{slug}", to=slug) | replace(from="{version}", to=record.version) | replace(from="{tag}", to=tag) | replace(from="{filename}", to=artifact.filename) | replace(from="{sha256}", to=artifact.digests.sha256) -%}

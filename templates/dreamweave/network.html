@@ -35,9 +35,10 @@
         <section class="dw-panel">
             <h2 class="dw-panel__title">Schemas</h2>
             <div class="dw-panel__body">
-                <a href="{{ get_url(path='schemas/modManifest-2.schema.json', trailing_slash=false) | safe }}">modManifest-2.schema.json</a><br>
-                <a href="{{ get_url(path='schemas/dreamweave-index-2.schema.json', trailing_slash=false) | safe }}">dreamweave-index-2.schema.json</a><br>
-                <a href="{{ get_url(path='schemas/dreamweave-release-payload-2.schema.json', trailing_slash=false) | safe }}">dreamweave-release-payload-2.schema.json</a>
+                {#- The protocol's schemas, at the URLs their $id names: the Mod Template's own site publishes them. -#}
+                <a href="https://dreamweave-mp.github.io/DreamWeave-Mod-Template/schemas/modManifest-3.schema.json">modManifest-3.schema.json</a><br>
+                <a href="https://dreamweave-mp.github.io/DreamWeave-Mod-Template/schemas/dreamweave-index-3.schema.json">dreamweave-index-3.schema.json</a><br>
+                <a href="https://dreamweave-mp.github.io/DreamWeave-Mod-Template/schemas/dreamweave-release-payload-3.schema.json">dreamweave-release-payload-3.schema.json</a>
             </div>
         </section>
         {%- if dw and not dw_offline and dw.comments is defined %}

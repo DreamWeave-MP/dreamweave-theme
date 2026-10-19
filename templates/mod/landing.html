@@ -39,6 +39,10 @@
             {#- A library: the command that adds it is the download. -#}
             <div class="dw-command" aria-label="Add it with Cargo"><code>cargo add {{ project.crate }}</code><button class="dw-copy" type="button" data-copy="cargo add {{ project.crate }}">Copy</button></div>
             {%- endif %}
+            {%- if project.format == "jpk" and project.jess and stable and not dw_offline %}
+            {#- A Jess package: the line that adds it to a jess.toml is the download. -#}
+            <div class="dw-command" aria-label="Add it to jess.toml"><code>"{{ project.jess }}" = "{{ stable.version }}"</code><button class="dw-copy" type="button" data-copy='"{{ project.jess }}" = "{{ stable.version }}"'>Copy</button></div>
+            {%- endif %}
             {%- if primary and not dw_offline and project.format == "binary" %}
             {#- A program: one button per platform, on a row of their own. The script marks the
                 visitor's own; without it they are all equal. -#}
@@ -60,7 +64,7 @@
                 {%- else %}
                 <a class="dw-button" href="{{ primary_source.url | safe }}" title="There is no stable release yet. This is the latest build of the default branch.">Development build {{ primary.version }} <span class="dw-button__meta">{{ primary_artifact.size | filesizeformat }}</span></a>
                 {%- endif %}
-                <a class="dw-button" href="modl://{{ project.game }}/?url={{ primary_source.url | safe }}" title="Hand the archive to umo or ModdingLinked MO2">Mod manager</a>
+                {%- if project.format != "jpk" %}<a class="dw-button" href="modl://{{ project.game }}/?url={{ primary_source.url | safe }}" title="Hand the archive to umo or ModdingLinked MO2">Mod manager</a>{% endif %}
                 {%- endif %}
                 {%- if project.crate and not dw_offline %}{% if stable %}{% set crate_page = project.links.crate ~ "/" ~ stable.version %}{% else %}{% set crate_page = project.links.crate %}{% endif %}<a class="dw-button" href="{{ crate_page | safe }}">crates.io{% if stable %} <span class="dw-button__meta">{{ stable.version }}</span>{% endif %}</a>{% endif %}
                 {%- if "install" in sections %}<a class="dw-button" href="#install">{% if project.format == "crate" %}Install{% else %}Install guide{% endif %}</a>{% endif %}

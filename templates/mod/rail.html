@@ -12,6 +12,9 @@
                 {%- if project.crate %}
                 <dt>Crate</dt><dd><code>{{ project.crate }}</code></dd>
                 {%- endif %}
+                {%- if project.jess %}
+                <dt>Jess package</dt><dd><code>{{ project.jess }}</code></dd>
+                {%- endif %}
                 {%- if not dw_offline %}
                 {%- for channel in project.channel_order %}
                 <dt>{{ channel | capitalize }}</dt><dd>{{ project.heads[channel].version }}</dd>
