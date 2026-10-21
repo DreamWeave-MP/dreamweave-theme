@@ -32,12 +32,9 @@
 {%- if is_rust %}{% set tag_prefix = "" %}{% else %}{% set tag_prefix = slug ~ "-" %}{% endif -%}
 {%- set crate_name = m.package.crate | default(value="") -%}
 {%- set crate_url = "https://crates.io/crates/" ~ crate_name -%}
-{#- A Jess package: the repository root is its Package Source, and jess.toml names it. -#}
+{#- A Jess package: mod.toml's jess key names it, a Package Source of the repository's jess workspace. -#}
 {%- set jess_package = "" -%}
-{%- if format == "jpk" -%}
-{%- set jess_manifest = load_data(path="jess.toml", required=false) -%}
-{%- if jess_manifest %}{% set jess_package = jess_manifest.package.id | default(value="") %}{% endif -%}
-{%- endif -%}
+{%- if format == "jpk" %}{% set jess_package = m.package.jess | default(value="") %}{% endif -%}
 
 {#- The published releases: mod.lock, which CI writes when a release tag is pushed. Offline
     documentation never reads it, so an archive's bytes depend only on what its tag holds. -#}
