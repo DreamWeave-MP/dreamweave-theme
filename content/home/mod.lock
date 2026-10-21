@@ -1,0 +1,49 @@
+{
+  "schema_version": "3",
+  "document": "lock",
+  "project": "817cd62f-bacb-4786-815c-fb47ab2fe80a",
+  "note": "Written by CI when a release tag is pushed: what each published release's archive contains. Do not edit.",
+  "releases": [
+    {
+      "version": "0.2.0",
+      "locked_from": "949aacc17484e5f0fb550cd68b2768039516751a",
+      "artifacts": [
+        {
+          "id": "jpk",
+          "format": "jpk",
+          "filename": "org.dreamweave.theme-0.2.0.jpk",
+          "media_type": "application/vnd.jess.jpk",
+          "size": 332521,
+          "digests": {
+            "sha256": "4de27968cf2245937cf40a1eadb7b0eccdfb2de9cb04d97757ccb921b06e7da4"
+          },
+          "jess": {
+            "package": "org.dreamweave.theme",
+            "jess_api": "1",
+            "content_digest": "764dae524a028a2734220399dc7cbc8e8593f86ba06b34ecc5fc576c5073480c",
+            "dependencies": {}
+          }
+        }
+      ],
+      "runtimes": {},
+      "platforms": [],
+      "provides": [],
+      "relationships": [],
+      "components": [
+        {
+          "id": "main",
+          "name": "DreamWeave Theme",
+          "path": ".",
+          "required": true,
+          "default": true,
+          "requires": [],
+          "conflicts": [],
+          "suggested_with": []
+        }
+      ],
+      "groups": [],
+      "extensions": {},
+      "critical_extensions": []
+    }
+  ]
+}
