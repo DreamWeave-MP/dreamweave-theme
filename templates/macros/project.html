@@ -45,8 +45,24 @@
 {%- endif -%}
 {%- set recorded_versions = records | map(attribute="version") -%}
 {%- set all_declared = m.releases | default(value=[]) -%}
-{#- Newest first. CI checks that dates and versions agree within a channel. -#}
-{%- set declared = all_declared | filter(attribute="date") | sort(attribute="date") | reverse -%}
+{#- Newest first. CI checks that dates and versions agree within a channel, but Tera cannot
+    compare versions and the generator's sort keeps no order among equal dates, so releases of
+    one date come in the order mod.toml declares them: the later declared first in a file that
+    lists releases oldest first, as written in a file that lists them newest first. -#}
+{%- set dated = all_declared | filter(attribute="date") -%}
+{%- set dates = dated | map(attribute="date") | sort -%}
+{%- set_global oldest_first = true -%}
+{%- if dated | length > 0 %}{% set first_dated = dated | first %}{% set oldest_date = dates | first %}{% if first_dated.date != oldest_date %}{% set_global oldest_first = false %}{% endif %}{% endif -%}
+{%- set_global declared = [] -%}
+{%- set_global previous_date = "" -%}
+{%- for date in dates | reverse -%}
+  {%- if date != previous_date -%}
+    {%- set same_date = dated | filter(attribute="date", value=date) -%}
+    {%- if oldest_first %}{% set same_date = same_date | reverse %}{% endif -%}
+    {%- set_global declared = declared | concat(with=same_date) -%}
+    {%- set_global previous_date = date -%}
+  {%- endif -%}
+{%- endfor -%}
 {%- set declared_versions = declared | map(attribute="version") -%}
 {%- set unverified = [] -%}
 {%- if ci and ci.unverified is defined %}{% set unverified = ci.unverified %}{% endif -%}
