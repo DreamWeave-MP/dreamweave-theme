@@ -19,3 +19,12 @@ jess = "org.dreamweave.theme"
 version = "0.2.0"
 date = 2026-10-19
 summary = "First release published as a DreamWeave project."
+
+[[releases]]
+version = "0.2.1"
+date = 2026-11-26
+summary = "Releases of one date come in the order they are declared, and the stable link finds its release when the landing page doesn't show it."
+fixed = [
+    "Releases that share a date are listed newest declared first, instead of in whatever order the generator's sort left them, which dropped one of four from the landing page's three newest.",
+    "The landing page's Stable link goes to the changelog page's entry when its release isn't among those the landing shows, instead of to an anchor the page doesn't have.",
+]
