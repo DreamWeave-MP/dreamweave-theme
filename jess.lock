@@ -1,6 +1,6 @@
 # Written by `jess workspace sync`: what the members depend on beyond each other, pinned.
 # Change a member's dependencies and sync again rather than editing this.
-lock_version = 2
+lock_version = 3
 
 [[package]]
 id = "org.dreamweave.dream-archive"
@@ -36,6 +36,16 @@ digest = "d2d4af2903e741bf046ead35361609644c4272c588668988327937a5cdd1d071"
 source = "publisher"
 manifest = "https://dreamweave-mp.github.io/dreamweave-site/dreamweave/projects/0d00eb81-e2ac-4e51-a4ae-718241adc828.json"
 artifact_sha256 = "b922b403f8ed33384f861df12a52d7a8a4afdd4b1d6494ce0992bce97f5da412"
+dependencies = []
+
+[[package]]
+id = "org.dreamweave.theme"
+version = "0.2.0"
+digest = "764dae524a028a2734220399dc7cbc8e8593f86ba06b34ecc5fc576c5073480c"
+source = "publisher"
+manifest = "https://dreamweave-mp.github.io/dreamweave-theme/dreamweave/projects/817cd62f-bacb-4786-815c-fb47ab2fe80a.json"
+artifact_sha256 = "4de27968cf2245937cf40a1eadb7b0eccdfb2de9cb04d97757ccb921b06e7da4"
+tool = true
 dependencies = []
 
 [[package]]
