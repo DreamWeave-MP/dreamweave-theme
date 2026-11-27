@@ -12,6 +12,11 @@
 {%- set changelog_url = page.permalink ~ "changelog/" -%}
 {#- CI generates the changelog page. Without it (a plain `zola serve`) every release is listed here. -#}
 {%- set changelog_page = load_data(path="content/" ~ page.colocated_path ~ "_changelog.md", format="plain", required=false) -%}
+{%- if changelog_page %}{% set shown_releases = project.declared_releases | slice(end=3) %}{% else %}{% set shown_releases = project.declared_releases %}{% endif -%}
+{%- if "releases" in sections %}{% set shown_versions = shown_releases | map(attribute="version") %}{% else %}{% set shown_versions = [] %}{% endif -%}
+{#- A release's anchor: here when the releases section shows it, on the changelog page when not. -#}
+{%- set stable_url = "" -%}
+{%- if stable %}{% set stable_slug = stable.version | slugify %}{% set stable_anchor = "#v" ~ stable_slug %}{% if stable.version in shown_versions %}{% set stable_url = stable_anchor %}{% elif changelog_page %}{% set stable_url = changelog_url ~ stable_anchor %}{% endif %}{% endif -%}
 {%- set relationships = project.relationships -%}
 {#- A page's own art: a logo beside the title, and a cover where no screenshot is featured. -#}
 {%- set page_icon = page.extra.icon | default(value="") -%}
@@ -88,7 +93,7 @@
             {%- if dw_offline %}
             <div><dt>This archive</dt><dd>{% if ci and ci.packaged_version %}{{ ci.packaged_version }}{% else %}unversioned{% endif %}</dd></div>
             {%- else %}
-            <div><dt>Stable</dt><dd>{% if stable %}<a href="#v{{ stable.version | slugify }}">{{ stable.version }}</a> <small>{{ stable.date }}</small>{% else %}not released{% endif %}</dd></div>
+            <div><dt>Stable</dt><dd>{% if stable %}{% if stable_url %}<a href="{{ stable_url | safe }}">{{ stable.version }}</a>{% else %}{{ stable.version }}{% endif %} <small>{{ stable.date }}</small>{% else %}not released{% endif %}</dd></div>
             {%- if development %}
             <div><dt>Development</dt><dd>{{ development.version }}</dd></div>
             {%- endif %}
@@ -192,9 +197,8 @@
     {%- elif name == "releases" and project.declared_releases | length > 0 %}
         <section class="dw-section" id="releases" aria-labelledby="releases-title">
             <div class="dw-section__head"><h2 id="releases-title">Releases</h2>{% if changelog_page %}<p><a href="{{ changelog_url | safe }}">Full changelog →</a></p>{% endif %}</div>
-            {%- if changelog_page %}{% set shown = project.declared_releases | slice(end=3) %}{% else %}{% set shown = project.declared_releases %}{% endif %}
             <ol class="dw-releases">
-            {%- for declared in shown %}
+            {%- for declared in shown_releases %}
                 {%- set published = false %}
                 {%- if not dw_offline %}
                 {%- set matches = project.releases | filter(attribute="version", value=declared.version) %}
